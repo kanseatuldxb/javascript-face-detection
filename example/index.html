@@ -1,0 +1,104 @@
+<html>
+
+<head>
+</head>
+
+<body>
+  video
+  <video src="" id="my-video" width="192" height="108"></video>
+  <br/>
+  button
+  <button id='flipCamera'>Flip</button>
+  <br/>
+  canvas
+  <canvas id="screenshot-canvas" width="1920" height="1080" style="border:1px solid grey"></canvas>
+  <br/>
+  image
+  <img id="image_view" name="image_view" style="height: 200px;">
+  image 2
+  <img id="image_view1" name="image_view" style="height: 200px;">
+  <br/>
+</body>
+<script src="jquery.facedetection.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+  var front = false;
+  var video = document.querySelector('video');
+
+  var constraints = {
+    video: {
+      facingMode: (front ? "user" : "environment"),
+      width: 640,
+      height: 480
+    }
+  };
+  navigator.mediaDevices.getUserMedia(constraints)
+    .then(function (mediaStream) {
+      video.srcObject = mediaStream;
+      video.onloadedmetadata = function (e) {
+        video.play();
+      };
+    })
+    .catch(function (err) {
+      console.log(err.name + ": " + err.message);
+    })
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="jquery.facedetection.js"></script>
+<script>
+  /* global $ */
+  $(function () {
+    "use strict";
+    $('#flipCamera').click(function (e) {
+      let canvas = document.getElementById('screenshot-canvas');
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      var imageObj = document.getElementById("image_view");
+      imageObj.src = canvas.toDataURL();
+      setTimeout(
+        function () {
+          e.preventDefault();
+          $('#image_view').faceDetection({
+            complete: function (faces) {
+              console.log("Canvas Studio");
+              //var imageObj = document.getElementById("image_view")        
+              console.log(faces);
+              for (var i = 0; i < faces.length; i++) {
+                if (faces[i].confidence > -100) {
+                  console.log(faces.length);
+                  var offsett = 50;
+                  console.log(faces);
+                  var sourceX = faces[i].x - 100;
+                  var sourceY = faces[i].y - 100;
+                  var sourceWidth = faces[i].width + 200;
+                  var sourceHeight = faces[i].height + 200;
+                  var destWidth = sourceWidth;
+                  var destHeight = sourceHeight;
+                  var canvas1 = document.createElement('canvas');
+                  canvas1.id = "CursorLayer";
+                  canvas1.width = sourceWidth;
+                  canvas1.height = sourceHeight;
+                  var destX = canvas1.width / 2 - destWidth / 2;
+                  var destY = canvas1.height / 2 - destHeight / 2;
+                  var context = canvas1.getContext('2d');
+                  context.drawImage(imageObj, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
+                  console.log(canvas1.toDataURL());
+                  //x["facedata"] = canvas.toDataURL();
+                  var imageObjx = document.getElementById("image_view1")  
+                  imageObjx.src = canvas1.toDataURL();
+                  document.body.appendChild(canvas1);
+                  console.log(canvas1.toDataURL());
+                }
+              }
+            },
+            error: function (code, message) {
+              alert('Error: ' + message);
+            }
+          });
+        }, 2000);
+
+    });
+  });
+</script>
+
+</html>

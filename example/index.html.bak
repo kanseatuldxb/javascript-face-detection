@@ -1,0 +1,74 @@
+<html><head>
+</head><body>
+    <video src="" id = "my-video"></video>
+    <br />
+<button id='flipCamera' >Flip</button>
+<canvas id="screenshot-canvas" width="1920" height="1080" style="border:1px solid grey"></canvas>
+</body>
+<script>
+  var front = false;
+var video = document.querySelector('video');
+  document.getElementById('flipCamera').onclick = function() {
+  let canvas = document.getElementById('screenshot-canvas');
+
+  let ctx = canvas.getContext('2d');
+  ctx.drawImage( video, 0, 0, canvas.width, canvas.height );
+  console.log("sdkhflhsdldfjl jsdklfjlkjsdlkfjlks lksdf"); 
+  front = !front; 
+  };
+  var constraints = { video: { facingMode: (front? "user" : "environment"), width: 640, height: 480  } };
+  navigator.mediaDevices.getUserMedia(constraints)
+  .then(function(mediaStream) {
+    video.srcObject = mediaStream;
+    video.onloadedmetadata = function(e) {
+    video.play();
+};
+})
+.catch(function(err) { console.log(err.name + ": " + err.message); })
+
+function dothis() {
+  console.log("sdkhflhsdldfjl jsdklfjlkjsdlkfjlks lksdf");
+  return 1 * 2;
+}
+</script></html>
+
+let canvas = document.getElementById('screenshot-canvas');
+
+let canvas = document.createElement('canvas');
+
+let image = canvas.toDataURL('image/jpeg');
+
+let canvas = document.createElement('canvas');
+
+canvas.width = 1920;
+canvas.height = 1080;
+
+let video = document.getElementById('my-video');
+
+let canvas = document.createElement('canvas');
+let video = document.getElementById('my-video');
+
+canvas.width = 1920;
+canvas.height = 1080;
+
+let ctx = canvas.getContext('2d');
+ctx.drawImage( video, 0, 0, canvas.width, canvas.height );
+
+let image = canvas.toDataURL('image/jpeg');
+
+
+let canvas = document.createElement('canvas');
+let video = document.getElementById('my-video');
+let image = '';
+
+video.addEventListener('seeked', function(){
+    canvas.width = 1920;
+    canvas.height = 1080;
+
+    let ctx = canvas.getContext('2d');
+    ctx.drawImage( video, 0, 0, canvas.width, canvas.height );
+
+    image = canvas.toDataURL('image/jpeg');
+});
+
+video.currentTime = TIME_IN_SECONDS;
